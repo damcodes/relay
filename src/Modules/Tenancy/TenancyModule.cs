@@ -1,9 +1,9 @@
+namespace Relay.Modules.Tenancy;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Relay.Modules.Tenancy.Data;
-
-namespace Relay.Modules.Tenancy;
 
 public static class TenancyModule
 {
@@ -13,10 +13,10 @@ public static class TenancyModule
     )
     {
         services.Configure<TenancyOptions>(configuration.GetSection(TenancyOptions.SectionName));
-        string connectionString = configuration.GetSection(TenancyOptions.SectionName).GetValue<string>("RelayAppDb")
+        string connectionString = configuration.GetSection(TenancyOptions.SectionName).GetValue<string>("ConnectionStrings:RelayAppDb")
             ?? throw new InvalidOperationException("RelayAppDb connection string not found in IConfiguration.");
         services.AddDbContext<TenancyDbContext>(options => 
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(connectionString, options => options.MigrationsAssembly(typeof(TenancyDbContext).Assembly)));
 
         return services;
     }

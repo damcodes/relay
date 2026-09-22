@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Relay.Modules.Tenancy.Domain;
 
-[Index(nameof(OrganizationId), nameof(UserId), IsUnique = true)]
+using Microsoft.EntityFrameworkCore;
+
+[PrimaryKey(nameof(OrganizationId), nameof(UserId))]
 public class Membership
 {
     public int OrganizationId { get; set; }
