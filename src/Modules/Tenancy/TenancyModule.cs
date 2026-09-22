@@ -3,7 +3,7 @@ namespace Relay.Modules.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Relay.Modules.Tenancy.Data;
+using Relay.Modules.Tenancy.Infrastructure;
 
 public static class TenancyModule
 {

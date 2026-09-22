@@ -1,4 +1,4 @@
-namespace Relay.Modules.Tenancy.Data;
+namespace Relay.Modules.Tenancy.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
 using Relay.Modules.Tenancy.Domain;
