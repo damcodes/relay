@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Relay.Api/Relay.Api.csproj" />
+    <Project Path="src/Relay.Common/Relay.Common.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Tenancy/">

@@ -1,4 +1,5 @@
 using Relay.Modules.Tenancy;
+using Relay.Common.App;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddTransient<ICommandDispatcher, CommandDispatcher>();
 builder.Services.AddTenancyModule(builder.Configuration);
 
 var app = builder.Build();
