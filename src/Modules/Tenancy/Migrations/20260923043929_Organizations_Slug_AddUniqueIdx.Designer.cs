@@ -12,8 +12,8 @@ using Relay.Modules.Tenancy.Infrastructure;
 namespace Relay.Modules.Tenancy.Migrations
 {
     [DbContext(typeof(TenancyDbContext))]
-    [Migration("20260922050315_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260923043929_Organizations_Slug_AddUniqueIdx")]
+    partial class Organizations_Slug_AddUniqueIdx
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace Relay.Modules.Tenancy.Migrations
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("Relay.Modules.Tenancy.Domain.Organization", b =>
+            modelBuilder.Entity("Relay.Modules.Tenancy.Domain.Organizations.Organization", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,6 +73,9 @@ namespace Relay.Modules.Tenancy.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Organizations");
                 });

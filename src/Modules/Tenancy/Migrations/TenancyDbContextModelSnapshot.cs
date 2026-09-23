@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Relay.Modules.Tenancy.Data;
+using Relay.Modules.Tenancy.Infrastructure;
 
 #nullable disable
 
@@ -46,7 +46,7 @@ namespace Relay.Modules.Tenancy.Migrations
                     b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("Relay.Modules.Tenancy.Domain.Organization", b =>
+            modelBuilder.Entity("Relay.Modules.Tenancy.Domain.Organizations.Organization", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,6 +70,9 @@ namespace Relay.Modules.Tenancy.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Organizations");
                 });
