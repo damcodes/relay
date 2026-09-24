@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddTransient<ICommandDispatcher, CommandDispatcher>();
+builder.Services.AddTransient<IQueryDispatcher, QueryDispatcher>();
 builder.Services.AddTenancyModule(builder.Configuration);
 
 var app = builder.Build();
