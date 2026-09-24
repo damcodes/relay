@@ -1,4 +1,6 @@
-﻿namespace Relay.Modules.Tenancy.Domain.Organizations;
+﻿using Relay.Modules.Tenancy.App.Organizations.Create;
+
+namespace Relay.Modules.Tenancy.Domain.Organizations;
 
 public sealed class Organization
 {
@@ -12,10 +14,10 @@ public sealed class Organization
     public static Organization Create(string name, string slug)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Organization name is required.", nameof(name));
+            throw new OrganizationNotCreatedException("Organization name is required.");
 
         if (string.IsNullOrWhiteSpace(slug))
-            throw new ArgumentException("Organization slug is required.", nameof(slug));
+            throw new OrganizationNotCreatedException("Organization slug is required.");
 
         return new Organization
         {
