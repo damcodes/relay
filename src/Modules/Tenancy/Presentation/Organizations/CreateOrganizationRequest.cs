@@ -1,3 +1,3 @@
 namespace Relay.Modules.Tenancy.Presentation.Organizations;
 
-public record CreateOrganizationRequest(string Name, string Slug);
+public record CreateOrganizationRequest(string Name);

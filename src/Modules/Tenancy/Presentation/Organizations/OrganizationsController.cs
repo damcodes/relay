@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Relay.Common.App;
-using Relay.Modules.Tenancy.App.Organizations.Create;
+using Relay.Modules.Tenancy.App.Organizations.Create.Commands;
+using Relay.Modules.Tenancy.App.Organizations.Create.Results;
 using Relay.Modules.Tenancy.App.Organizations.Get;
 using Relay.Modules.Tenancy.Domain.Organizations;
 
@@ -19,20 +20,36 @@ public class OrganizationsController(ICommandDispatcher commandDispatcher, IQuer
         try
         {
             var command = new CreateOrganizationCommand(request.Name);
-            int newOrgId = await _commandDispatcher.DispatchAsync<CreateOrganizationCommand, int>(command, cancellationToken);
-
-            var query = new GetByIdQuery(newOrgId);
-            var newOrg = await _queryDispatcher.DispatchAsync<GetByIdQuery, Organization>(query, cancellationToken);
-            var newOrgResponse = new CreateOrganizationResponse(newOrg.Id, newOrg.Name, newOrg.Slug, newOrg.CreatedAt, newOrg.Status.ToString());
-            return StatusCode(201, newOrgResponse);
+            var newOrg = await _commandDispatcher.DispatchAsync<CreateOrganizationCommand, CreateOrganizationResult>(command, cancellationToken);
+            var newOrgResult = new CreateOrganizationResponse(newOrg.Id, newOrg.Name, newOrg.Slug, newOrg.CreatedAt, newOrg.Status);
+            return CreatedAtAction(
+                actionName: nameof(GetOrganization),
+                routeValues: new { id = newOrg.Id },
+                value: newOrgResult
+            );
         }
         catch (OrganizationNotCreatedException ex)
         {
             return BadRequest(ex.Message);
         }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = $"An unexpected server error occurred. {ex.Message}"});
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetOrganization(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var query = new GetByIdQuery(id);
+            var org = await _queryDispatcher.DispatchAsync<GetByIdQuery, Organization>(query, cancellationToken);
+            return Ok(org);
+        }
         catch (OrganizationNotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
