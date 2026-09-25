@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Relay.Common.App;
 using Relay.Modules.Tenancy.App.Organizations.Create.Commands;
 using Relay.Modules.Tenancy.App.Organizations.Create.Results;
-using Relay.Modules.Tenancy.App.Organizations.Get;
+using Relay.Modules.Tenancy.App.Organizations.Get.Exceptions;
+using Relay.Modules.Tenancy.App.Organizations.Get.Queries;
+using Relay.Modules.Tenancy.App.Organizations.Get.Results;
 using Relay.Modules.Tenancy.Domain.Organizations;
+using Relay.Modules.Tenancy.Presentation.Organizations.Dtos;
 
 namespace Relay.Modules.Tenancy.Presentation.Organizations;
 
@@ -44,8 +47,9 @@ public class OrganizationsController(ICommandDispatcher commandDispatcher, IQuer
         try
         {
             var query = new GetByIdQuery(id);
-            var org = await _queryDispatcher.DispatchAsync<GetByIdQuery, Organization>(query, cancellationToken);
-            return Ok(org);
+            var org = await _queryDispatcher.DispatchAsync<GetByIdQuery, OrganizationDetails>(query, cancellationToken);
+            var orgDto = new OrganizationDetailsResponse(org.Id, org.Name, org.Slug, org.Status, org.CreatedAt);
+            return Ok(orgDto);
         }
         catch (OrganizationNotFoundException ex)
         {
